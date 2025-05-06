@@ -69,7 +69,13 @@ def get_api_key():
     # Get API key from environment variable
     api_key = os.getenv("YOUTUBE_API_KEY")
     if not api_key:
-        st.error("YouTube API key not found. Please set the YOUTUBE_API_KEY environment variable.")
+        st.error("YouTube API key not found. Please set the YOUTUBE_API_KEY environment variable in Streamlit Cloud.")
+        st.markdown('''
+        ### How to set up your API key in Streamlit Cloud:
+        1. Go to your app settings in Streamlit Cloud
+        2. Click on 'Secrets'
+        3. Add a new secret with the key `YOUTUBE_API_KEY` and your API key as the value
+        ''')
         st.stop()
     return api_key
 
