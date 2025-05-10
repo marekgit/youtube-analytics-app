@@ -6,6 +6,9 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from dotenv import load_dotenv
 
+# Import the comment extractor module
+from comment_extractor import comments_extractor_ui
+
 # Environment variables are loaded in get_api_key()
 
 # Set page configuration
@@ -13,7 +16,10 @@ st.set_page_config(
     page_title="YouTube Analytics App",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'About': "# YouTube Analytics App\nAnalyze YouTube channels and extract video comments."
+    }
 )
 
 # Custom CSS
@@ -180,10 +186,10 @@ def format_number(number, use_exact=False, precision=1):
         else:
             return str(number)
 
-def main():
-    """Main function to run the Streamlit app."""
-    st.markdown('<h1 class="main-header">YouTube Analytics App</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">Analyze any YouTube channel by entering its URL</p>', unsafe_allow_html=True)
+def channel_analytics():
+    """Channel analytics feature."""
+    st.markdown('<h2 class="sub-header">Channel Analytics</h2>', unsafe_allow_html=True)
+    st.markdown('<p>Analyze any YouTube channel by entering its URL</p>', unsafe_allow_html=True)
     
     # Input for YouTube channel URL
     channel_url = st.text_input("Enter YouTube Channel URL", placeholder="https://www.youtube.com/@username or https://www.youtube.com/channel/UC...")
@@ -267,6 +273,40 @@ def main():
                 video_count = format_number(int(statistics["videoCount"]), use_exact=True)
                 st.markdown(f'<p class="stat-value">{video_count}</p>', unsafe_allow_html=True)
                 st.markdown('</div>', unsafe_allow_html=True)
+
+def app_main():
+    """Main application logic after authentication."""
+    st.markdown('<h1 class="main-header">YouTube Analytics App</h1>', unsafe_allow_html=True)
+    
+    # Create sidebar for navigation
+    st.sidebar.markdown("## Navigation")
+    page = st.sidebar.radio(
+        "Select a feature:",
+        ["Channel Analytics", "Comment Extractor"],
+        index=0
+    )
+    
+    # Display the selected page
+    if page == "Channel Analytics":
+        channel_analytics()
+    elif page == "Comment Extractor":
+        comments_extractor_ui()
+
+def main():
+    """Main function with authentication check."""
+    # Import auth module here to avoid circular imports
+    try:
+        from auth import check_password
+        
+        # Check if the user is authenticated
+        if check_password():
+            app_main()
+        else:
+            st.markdown('<h1 class="main-header">YouTube Analytics App</h1>', unsafe_allow_html=True)
+            st.markdown('<p class="sub-header">Please enter the password to access this app</p>', unsafe_allow_html=True)
+    except ImportError:
+        # If auth module is not available, run without authentication
+        app_main()
 
 if __name__ == "__main__":
     main()

@@ -29,7 +29,7 @@ env/
 .env
 
 # Streamlit specific files to ignore
-# .streamlit/secrets.toml
+.streamlit/secrets.toml
 
 # OS specific
 .DS_Store
