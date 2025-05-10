@@ -27,11 +27,6 @@ A Streamlit application that allows users to analyze YouTube channel statistics 
 3. Create a `.env` file in the root directory with your API keys:
    ```
    YOUTUBE_API_KEY=your_api_key_here
-   
-   # Optional: For Airtable integration
-   AIRTABLE_API_KEY=your_airtable_api_key_here
-   AIRTABLE_BASE_ID=your_airtable_base_id_here
-   AIRTABLE_TABLE_NAME=your_airtable_table_name_here
    ```
 4. Run the application:
    ```
